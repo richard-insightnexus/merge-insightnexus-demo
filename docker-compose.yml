@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+  db:
+    image: 'public.ecr.aws/k7x3y1t0/insightnexus/postgres-db:merge-demo-01'
+    container_name: db
+    hostname: db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: "pg_isready --username=insightnexus"
+      interval: 5s
+      timeout: 5s
+      retries: 20 
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+  enrichment:
+    image: 'public.ecr.aws/k7x3y1t0/insightnexus/enrichment:merge-demo-01'
+    container_name: enrichment
+    hostname: enrichment
+    ports:
+      - "8085:80"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+  dataprocessor:
+    image: 'public.ecr.aws/k7x3y1t0/insightnexus/dataprocessor:merge-demo-01'
+    container_name: dataprocessor
+    hostname: dataprocessor
+    ports:
+      - "8081:8081"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATAPROCESSOR_PORT=${DATAPROCESSOR_PORT}
+      - MERGE_API_KEY=${MERGE_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ENRICHMENT_BASE_URL=${ENRICHMENT_BASE_URL}
+      - POSTGRES_DDL_AUTO=${POSTGRES_DDL_AUTO}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_URL=${POSTGRES_URL}
+      - POSTGRES_USER=${POSTGRES_USER}
