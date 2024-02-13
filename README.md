@@ -1,9 +1,9 @@
 # InsightNexus Merge Demo
 
-This is a demo of InsightNexus' dataprocessor that integrates with Merge's Support Ticketing and LlamaIndex. It's set to run with OpenAI's API for ease. 
+This is a demo of InsightNexus' dataprocessor that integrates with Merge's Support Ticketing and LlamaIndex. It's set to run with OpenAI's API for ease.  Preview of the upcoming docs can be found for: https://insightnexus.mintlify.app/api-reference
 ## Notable Features
 
-- Prompt Injection protection
+- Prompt Injection protection (SQL Injection Protection)
 - Multi-tenant data protection
 - Data ingestion enrichment
 - Retrieval enrichment
